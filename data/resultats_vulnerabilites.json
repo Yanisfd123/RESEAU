@@ -1,0 +1,32 @@
+[
+    {
+        "ip": "192.168.1.1",
+        "vulnerabilites": [
+            {
+                "port": 53,
+                "description": "DNS : Risque d'empoisonnement de cache"
+            },
+            {
+                "port": 80,
+                "description": "HTTP : Donn\u00e9es non chiffr\u00e9es"
+            },
+            {
+                "port": 443,
+                "description": "HTTPS : Configuration potentiellement faible"
+            }
+        ]
+    },
+    {
+        "ip": "192.168.1.146",
+        "vulnerabilites": [
+            {
+                "port": 22,
+                "description": "SSH : Risque d'acc\u00e8s non autoris\u00e9"
+            },
+            {
+                "port": 80,
+                "description": "HTTP : Donn\u00e9es non chiffr\u00e9es"
+            }
+        ]
+    }
+]

@@ -1,0 +1,17 @@
+{
+    "21": "FTP : Risque d'accès non autorisé",
+    "22": "SSH : Risque d'accès non autorisé",
+    "23": "Telnet : Données non chiffrées",
+    "25": "SMTP : Risque d'usurpation d'identité",
+    "53": "DNS : Risque d'empoisonnement de cache",
+    "80": "HTTP : Données non chiffrées",
+    "110": "POP3 : Données non chiffrées",
+    "139": "SMB : Risque de partage de fichiers non sécurisé",
+    "443": "HTTPS : Configuration potentiellement faible",
+    "445": "SMB : Vulnérabilité potentielle (ex: EternalBlue)",
+    "1433": "MS-SQL : Risque d'accès non autorisé",
+    "3306": "MySQL : Risque d'accès non autorisé",
+    "3389": "RDP : Risque d'accès distant non autorisé",
+    "5900": "VNC : Risque d'accès non autorisé",
+    "8080": "HTTP-Alt : Données non chiffrées"
+  }
