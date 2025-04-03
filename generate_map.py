@@ -1,38 +1,76 @@
 import json
 import networkx as nx
 import matplotlib.pyplot as plt
+import math
 
 def charger_donnees(fichier):
     with open(fichier, "r") as f:
         return json.load(f)
 
 def generer_carte_reseau():
-    print("📍 Génération de la carte du réseau...")
-    
+    print("📍 Génération de la carte du réseau en forme de soleil...")
+
     appareils = charger_donnees("data/resultats_reseau.json")
-    vulnerabilites = charger_donnees("data/resultats_vulnerabilites.json")
     G = nx.Graph()
     
-    vuln_dict = {(v["ip"], item["port"]): item["description"] 
-                 for v in vulnerabilites for item in v["vulnerabilites"]}
+    # Ajout du noeud central représentant le réseau
+    centre_reseau = "Mon Réseau"
+    G.add_node(centre_reseau, color="gold", size=5000)
     
-    for appareil in appareils:
+    pos = {centre_reseau: (0, 0)}  # Position centrale
+    
+    # Calcul des positions en cercle autour du centre
+    nb_appareils = len(appareils)
+    angle_step = 2 * math.pi / nb_appareils if nb_appareils > 0 else 0
+    
+    for i, appareil in enumerate(appareils):
         ip = appareil["ip"]
-        G.add_node(ip, color='green')
-        for port in appareil["ports_ouverts"]:
-            port_node = f"Port {port}"
-            G.add_node(port_node, color='blue')
-            G.add_edge(ip, port_node, desc=vuln_dict.get((ip, port), ""))
-    
-    pos = nx.spring_layout(G, seed=42)
+        G.add_node(ip, color="lightblue")
+        
+        # Position en cercle autour du centre
+        angle = i * angle_step
+        distance = 2  # Distance du centre
+        pos[ip] = (distance * math.cos(angle), distance * math.sin(angle))
+        
+        # Connexion au centre
+        G.add_edge(centre_reseau, ip)
+        
+        # Ajout des ports sous chaque IP (en descendant)
+        nb_ports = len(appareil["ports_ouverts"])
+        for j, port in enumerate(appareil["ports_ouverts"]):
+            port_node = f"{ip}\nPort {port}"
+            G.add_node(port_node, color="lightgreen", size=800)
+            
+            # Position sous l'IP avec un décalage
+            port_distance = distance + 1 + j * 0.3
+            pos[port_node] = (port_distance * math.cos(angle), 
+                             port_distance * math.sin(angle) - j * 0.2)
+            
+            G.add_edge(ip, port_node)
+
+    # Préparation des couleurs et tailles
     colors = [G.nodes[n].get('color', 'gray') for n in G.nodes]
+    sizes = [G.nodes[n].get('size', 1000) for n in G.nodes]
     
-    plt.figure(figsize=(12, 8))
-    nx.draw(G, pos, with_labels=True, node_color=colors, node_size=3000, edge_color="black", font_size=10)
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, "desc"), font_size=8)
+    plt.figure(figsize=(12, 12))
+    nx.draw_networkx(
+        G, pos, 
+        with_labels=True, 
+        node_color=colors,
+        node_size=sizes,
+        font_size=7,
+        edge_color="gray",
+        alpha=0.8,
+        linewidths=0.5
+    )
     
-    plt.title("Carte du Réseau avec Vulnérabilités")
+    # Dessiner un cercle autour du noeud central pour l'effet "boule"
+    centre_circle = plt.Circle(pos[centre_reseau], 0.3, color='gold', alpha=0.4)
+    plt.gca().add_patch(centre_circle)
+    
+    plt.title("Carte du Réseau - Topologie en Soleil", pad=20)
     plt.axis("off")
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":

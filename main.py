@@ -11,6 +11,7 @@ VULN_SCAN_FILE = os.path.join(RESULTS_DIR, "resultats_vulnerabilites.json")
 
 def sauvegarder_resultats(resultats, fichier):
     """Sauvegarde les résultats dans un fichier JSON."""
+    os.makedirs(RESULTS_DIR, exist_ok=True)
     with open(fichier, "w") as f:
         json.dump(resultats, f, indent=4)
 
@@ -19,6 +20,8 @@ def main():
 
     # Étape 1 : Scanner le réseau
     ip_range = input("Entrez la plage d'adresses IP à scanner (ex: 192.168.1.0/24) : ")
+    
+    # Étape 1 : Scanner le réseau
     resultats_reseau = scan_reseau(ip_range)
     sauvegarder_resultats(resultats_reseau, NETWORK_SCAN_FILE)
     print(f"✅ Scan réseau terminé. Résultats sauvegardés dans {NETWORK_SCAN_FILE}")

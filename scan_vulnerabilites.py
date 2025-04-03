@@ -45,5 +45,3 @@ def scan_vulnerabilites(ip_range):
 
     return resultats
 
-ip_range = input("Entrez l'adresse IP ou la plage d'adresses IP à scanner : ")
-resultats = scan_vulnerabilites(ip_range)

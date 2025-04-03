@@ -32,5 +32,3 @@ def scan_reseau(ip_range):
 
     return resultats
 
-ip_range = input("Entrez la plage d'adresses IP à scanner (ex: 192.168.1.0/24) : ")
-resultats = scan_reseau(ip_range)
